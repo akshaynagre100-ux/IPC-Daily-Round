@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nursing Handover Online Audit</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0;padding:18px;color:#1f2937}.card{max-width:720px;margin:auto;background:#fff;border-radius:16px;padding:22px;box-shadow:0 4px 18px #0001}h1{margin:0 0 6px;font-size:24px;color:#174ea6}.sub{color:#6b7280;margin-bottom:20px}label{font-weight:600;display:block;margin:14px 0 7px}input,select,textarea{width:100%;box-sizing:border-box;padding:11px;border:1px solid #ccd3df;border-radius:9px;font-size:15px}.q{border:1px solid #e2e8f0;border-radius:12px;padding:15px;margin:12px 0}.q b{display:block;margin-bottom:12px;line-height:1.4}.opts{display:flex;gap:8px;flex-wrap:wrap}.opts label{margin:0;font-weight:500}.opts input{width:auto;margin-right:5px}button{width:100%;padding:13px;border:0;border-radius:10px;background:#174ea6;color:white;font-size:16px;font-weight:700;margin-top:16px;cursor:pointer}.result{display:none;margin-top:18px;padding:15px;border-radius:12px;background:#eef6ff}.small{font-size:13px;color:#6b7280}
+</style>
+</head><body>
+<div class="card"><h1>Nursing Handover – Online Audit</h1><div class="sub">Bedside Nursing Handover Compliance Checklist</div>
+<label>Audit Date</label><input type="date" id="date"><label>Ward / Department</label><input id="ward" placeholder="Enter ward / department"><label>Shift</label><select id="shift"><option value="">Select Shift</option><option>Morning</option><option>Evening</option><option>Night</option></select><label>Auditor Name</label><input id="auditor" placeholder="Enter auditor name"><div id="questions"></div><label>Overall Observation / Remarks</label><textarea id="remarks" rows="3" placeholder="Enter remarks"></textarea><button onclick="calculate()">Submit Audit & Calculate Compliance</button><div class="result" id="result"></div><div class="small" style="margin-top:12px">Nursing Handover Audit</div></div>
+<script>
+const qs=["Patient handover happens at bedside","Staff uses ISBAR Tool to give hand over","Reports of all relevant investigation / undergone procedures are discussed during bedside handover","Identified risk / infectious status / Special precautions are communicated","Plan of care discussed during the handover"];
+const box=document.getElementById("questions");qs.forEach((q,i)=>{box.innerHTML+=`<div class="q"><b>${i+1}. ${q}</b><div class="opts"><label><input type="radio" name="q${i}" value="C"> Compliant</label><label><input type="radio" name="q${i}" value="NC"> Non-Compliant</label><label><input type="radio" name="q${i}" value="NA"> N/A</label></div></div>`});document.getElementById("date").valueAsDate=new Date();
+function calculate(){let c=0,nc=0,na=0,un=0;qs.forEach((_,i)=>{const x=document.querySelector(`input[name="q${i}"]:checked`);if(!x)un++;else if(x.value==="C")c++;else if(x.value==="NC")nc++;else na++});if(un){alert("Please complete all 5 audit points.");return}const applicable=c+nc,pct=applicable?((c/applicable)*100).toFixed(1):"0.0";const r=document.getElementById("result");r.style.display="block";r.innerHTML=`<b>Audit Result</b><br>Compliant: ${c}<br>Non-Compliant: ${nc}<br>N/A: ${na}<br><br><b>Compliance: ${pct}%</b>`;window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"})}
+</script></body></html>
